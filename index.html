@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PartyMind AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Confetti Canvas -->
+<canvas id="cc"></canvas>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAVIGATION
+═══════════════════════════════════════════════════════════ -->
+<nav>
+  <div class="nlogo" onclick="scrollTop()">
+    <span class="nlogo-icon">🎊</span>
+    <span class="nlogo-text">PartyMind AI</span>
+  </div>
+  <div class="nav-r">
+    <button class="ttoggle" id="tt" title="Toggle theme">🌙</button>
+    <button class="nbtn" onclick="gotoGen()">Generate Party ✨</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+    <div class="orb o3"></div>
+    <div class="hgrid"></div>
+  </div>
+
+  <div class="hcontent">
+    <div class="hbadge">✨ AI-Powered Party Planning</div>
+    <h1 class="htitle">
+      Plan Your<br>
+      <span class="gtext">Dream Party</span><br>
+      In Minutes
+    </h1>
+    <p class="hsub">
+      Tell us your vibe. We'll generate a complete theme, décor, menu, music & more — instantly.
+      No planning stress. Just pure fun.
+    </p>
+    <div class="hcta">
+      <button class="btnp" onclick="gotoGen()"><span>Start Planning</span><span>→</span></button>
+      <button class="btng" onclick="surpriseMe()">🎲 Surprise Me</button>
+    </div>
+    <div class="hstats">
+      <div class="hstat"><span class="hsn">5+</span><span class="hsl">Themes</span></div>
+      <div class="hsdiv"></div>
+      <div class="hstat"><span class="hsn">50+</span><span class="hsl">Suggestions</span></div>
+      <div class="hsdiv"></div>
+      <div class="hstat"><span class="hsn">∞</span><span class="hsl">Combos</span></div>
+    </div>
+  </div>
+
+  <div class="hvisual">
+    <div class="fcards">
+      <div class="fcard">🎭 Masquerade Ball</div>
+      <div class="fcard">🌴 Tropical Escape</div>
+      <div class="fcard">🕹️ 80s Retro Neon</div>
+      <div class="fcard">🌿 Enchanted Forest</div>
+      <div class="fcard">🥂 Great Gatsby</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     GENERATOR / WIZARD SECTION
+═══════════════════════════════════════════════════════════ -->
+<section class="sec alt" id="gen">
+  <div class="shead">
+    <div class="sbadge">Party Generator</div>
+    <h2 class="stitle">Build Your Perfect Party</h2>
+    <p class="ssub">Fill in the details — the more you share, the better your plan!</p>
+  </div>
+
+  <!-- Progress Stepper -->
+  <div class="pwrap">
+    <div class="psteps" id="psteps">
+      <div class="pstep active" data-s="1"><div class="pnum">1</div><div class="plbl">Basics</div></div>
+      <div class="pline" id="pl1"></div>
+      <div class="pstep" data-s="2"><div class="pnum">2</div><div class="plbl">Prefs</div></div>
+      <div class="pline" id="pl2"></div>
+      <div class="pstep" data-s="3"><div class="pnum">3</div><div class="plbl">Details</div></div>
+      <div class="pline" id="pl3"></div>
+      <div class="pstep" data-s="4"><div class="pnum">⚡</div><div class="plbl">Generate</div></div>
+    </div>
+  </div>
+
+  <div class="wizard" id="wizard">
+
+    <!-- ── Step 1: Basics ───────────────────────────────────── -->
+    <div class="wstep active" id="ws1">
+      <div class="wtitle">Tell us the basics 🎉</div>
+      <div class="fgrid">
+
+        <div class="fg">
+          <label>Occasion <span class="req">*</span></label>
+          <div class="cs" id="ocChips">
+            <div class="co on"  data-v="Birthday">🎂 Birthday</div>
+            <div class="co"     data-v="Anniversary">💑 Anniversary</div>
+            <div class="co"     data-v="Farewell">👋 Farewell</div>
+            <div class="co"     data-v="Wedding">💍 Wedding</div>
+            <div class="co"     data-v="Corporate">💼 Corporate</div>
+            <div class="co"     data-v="Graduation">🎓 Graduation</div>
+            <div class="co"     data-v="Halloween">🎃 Halloween</div>
+            <div class="co"     data-v="New Year">🎆 New Year</div>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Age Group <span class="req">*</span></label>
+          <div class="cs" id="agChips">
+            <div class="co"     data-v="Kids">🧒 Kids (5–12)</div>
+            <div class="co"     data-v="Teens">🧑 Teens (13–19)</div>
+            <div class="co on"  data-v="Adults">🧑‍💼 Adults (20+)</div>
+            <div class="co"     data-v="Mixed">🎊 Mixed Ages</div>
+          </div>
+        </div>
+
+        <div class="fr2">
+          <div class="fg">
+            <label>Number of Guests</label>
+            <div class="rwrap">
+              <input type="range" id="gr" min="5" max="500" value="50" step="5">
+              <div class="rval"><b id="gv">50</b> guests</div>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Party Duration</label>
+            <div class="rwrap">
+              <input type="range" id="dr" min="1" max="12" value="4" step="0.5">
+              <div class="rval"><b id="dv">4</b> hours</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Event Date (for countdown timer)</label>
+          <input type="date" class="fi" id="evDate">
+        </div>
+
+      </div>
+      <div class="snav">
+        <button class="btnnext" onclick="goStep(2)">Next: Preferences →</button>
+      </div>
+    </div>
+
+    <!-- ── Step 2: Preferences ──────────────────────────────── -->
+    <div class="wstep" id="ws2">
+      <div class="wtitle">Set your preferences 🎨</div>
+      <div class="fgrid">
+
+        <div class="fg">
+          <label>Venue Type <span class="req">*</span></label>
+          <div class="vg" id="vChips">
+            <div class="vc on" data-v="Indoor">🏠<span>Indoor</span></div>
+            <div class="vc"    data-v="Outdoor">🌳<span>Outdoor</span></div>
+            <div class="vc"    data-v="Rooftop">🌆<span>Rooftop</span></div>
+            <div class="vc"    data-v="Beach">🏖️<span>Beach</span></div>
+            <div class="vc"    data-v="Banquet Hall">🏛️<span>Banquet</span></div>
+            <div class="vc"    data-v="Garden">🌸<span>Garden</span></div>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Budget Range</label>
+          <div class="bwrap">
+            <div class="blbls">
+              <span>₹5K</span><span>₹50K</span><span>₹1L</span><span>₹5L+</span>
+            </div>
+            <input type="range" id="br" min="1" max="4" value="2" step="1">
+            <div class="bdisplay" id="bd">₹20,000 – ₹50,000</div>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Food Preference</label>
+          <div class="cs" id="fdChips">
+            <div class="co on" data-v="Veg">🥗 Veg</div>
+            <div class="co"    data-v="Non-Veg">🍗 Non-Veg</div>
+            <div class="co"    data-v="Vegan">🌱 Vegan</div>
+            <div class="co"    data-v="Mixed">🍽️ Mixed</div>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Music Preference</label>
+          <div class="cs" id="muChips">
+            <div class="co"    data-v="DJ">🎧 DJ</div>
+            <div class="co on" data-v="Live Band">🎸 Live Band</div>
+            <div class="co"    data-v="Playlist">📱 Playlist</div>
+            <div class="co"    data-v="Classical">🎻 Classical</div>
+            <div class="co"    data-v="No Music">🔇 No Music</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="snav">
+        <button class="btnback" onclick="goStep(1)">← Back</button>
+        <button class="btnnext" onclick="goStep(3)">Next: Details →</button>
+      </div>
+    </div>
+
+    <!-- ── Step 3: Final Details ─────────────────────────────── -->
+    <div class="wstep" id="ws3">
+      <div class="wtitle">Final touches ✨</div>
+      <div class="fgrid">
+
+        <div class="fg">
+          <label>Theme Preference</label>
+          <div class="cs" id="thChips">
+            <div class="co on" data-v="auto">🤖 Auto-Generate</div>
+            <div class="co"    data-v="Masquerade Ball">🎭 Masquerade</div>
+            <div class="co"    data-v="Tropical">🌴 Tropical</div>
+            <div class="co"    data-v="80s Retro">🕹️ 80s Retro</div>
+            <div class="co"    data-v="Enchanted Forest">🌿 Enchanted</div>
+            <div class="co"    data-v="Great Gatsby">🥂 Gatsby</div>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Dress Code Preference</label>
+          <div class="cs" id="dcChips">
+            <div class="co on" data-v="Smart Casual">👔 Smart Casual</div>
+            <div class="co"    data-v="Formal">🤵 Formal</div>
+            <div class="co"    data-v="Themed Costume">🎭 Themed</div>
+            <div class="co"    data-v="Casual">👕 Casual</div>
+            <div class="co"    data-v="Black Tie">🥻 Black Tie</div>
+          </div>
+        </div>
+
+        <div class="fg">
+          <label>Location (City)</label>
+          <input type="text" class="fi" id="locIn" placeholder="e.g. Mumbai, Delhi, Bangalore...">
+        </div>
+
+        <div class="fg">
+          <label>Special Requirements</label>
+          <textarea class="fi fta" id="specIn" placeholder="Dietary needs, accessibility, custom ideas..."></textarea>
+        </div>
+
+      </div>
+      <div class="snav">
+        <button class="btnback" onclick="goStep(2)">← Back</button>
+        <button class="btngen" onclick="generateParty()">
+          <span class="gicon">⚡</span><span>Generate My Party Plan!</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── Step 4: Generating ────────────────────────────────── -->
+    <div class="wstep" id="ws4">
+      <div class="genscreen">
+        <div class="genan">
+          <div class="gr gr1"></div>
+          <div class="gr gr2"></div>
+          <div class="gr gr3"></div>
+          <div class="gemoji" id="gem">🎊</div>
+        </div>
+        <div class="gtxt" id="gtxt">Crafting your perfect party...</div>
+        <div class="gpbar"><div class="gfill" id="gfill"></div></div>
+        <div class="gsteps" id="gstep">Analyzing your preferences...</div>
+      </div>
+    </div>
+
+  </div><!-- /wizard -->
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     RESULTS SECTION
+═══════════════════════════════════════════════════════════ -->
+<section class="results" id="results">
+
+  <!-- Countdown Timer -->
+  <div class="cdb" id="cdb" style="display:none">
+    <span class="cdlbl">🗓️ Countdown:</span>
+    <div class="cdus">
+      <div class="cdu"><span id="cdd">00</span><label>Days</label></div>
+      <div class="cdsep">:</div>
+      <div class="cdu"><span id="cdh">00</span><label>Hours</label></div>
+      <div class="cdsep">:</div>
+      <div class="cdu"><span id="cdm">00</span><label>Mins</label></div>
+      <div class="cdsep">:</div>
+      <div class="cdu"><span id="cds">00</span><label>Secs</label></div>
+    </div>
+  </div>
+
+  <!-- Result Header -->
+  <div class="rhdr">
+    <div class="rbadge" id="rbadge">Your Party Plan</div>
+    <h2 class="rtitle" id="rtitle">Dream Party</h2>
+    <p class="rdesc" id="rdesc">Complete personalized plan</p>
+    <div class="rpal" id="rpal"></div>
+    <div class="ract">
+      <button class="ab" onclick="dlPDF()">📥 Download PDF</button>
+      <button class="ab" onclick="shareP()">🔗 Share Plan</button>
+      <button class="ab" onclick="resetG()">🔄 New Party</button>
+      <button class="ab" style="border-color:var(--a3);color:var(--a3)" onclick="surpriseMe()">🎲 Surprise Me</button>
+    </div>
+  </div>
+
+  <!-- Theme Choice Cards -->
+  <div class="shead">
+    <div class="sbadge">Best Matches</div>
+    <h3 class="stitle" style="font-size:2rem">Choose Your Theme</h3>
+  </div>
+  <div class="tcc" id="tcc"></div>
+
+  <!-- Detail Blueprint Cards -->
+  <div class="shead">
+    <div class="sbadge">Full Plan</div>
+    <h3 class="stitle" style="font-size:2rem">Your Party Blueprint</h3>
+  </div>
+  <div class="dgrid" id="dg"></div>
+
+  <!-- Planning Checklist -->
+  <div class="sec" style="padding:0 0 3rem">
+    <div class="shead">
+      <div class="sbadge">Checklist</div>
+      <h3 class="stitle" style="font-size:2rem">Planning Checklist</h3>
+    </div>
+    <div class="cl" id="cl"></div>
+  </div>
+
+  <!-- Mood Board -->
+  <div class="sec" style="padding:0 0 3rem">
+    <div class="shead">
+      <div class="sbadge">Inspiration</div>
+      <h3 class="stitle" style="font-size:2rem">Mood Board</h3>
+    </div>
+    <div class="mbg" id="mbg"></div>
+  </div>
+
+  <!-- AI Chatbot -->
+  <div class="cbs">
+    <div class="shead">
+      <div class="sbadge">AI Assistant</div>
+      <h3 class="stitle" style="font-size:2rem">Chat with PartyMind AI 🤖</h3>
+      <p class="ssub">Ask me anything about your party — I'm your personal AI planner!</p>
+    </div>
+    <div class="cbw">
+      <div class="cms" id="cms">
+        <div class="cmsg">
+          <div class="cav">🤖</div>
+          <div class="cbub">Hi! Your party plan is ready! Ask me anything — decoration tips, food ideas, music picks, budget advice, or anything else about your party theme! 🎉</div>
+        </div>
+      </div>
+      <div class="cqc" id="cqc"></div>
+      <div class="cir">
+        <textarea class="ci2" id="ci2" placeholder="Ask me anything about your party..." rows="1"></textarea>
+        <button class="cs2" onclick="sendChat()">➤</button>
+      </div>
+    </div>
+  </div>
+
+</section><!-- /results -->
+
+<!-- Sound FAB -->
+<button class="sfab" id="sfab" title="Sound">🔇</button>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SCRIPTS (load in dependency order)
+═══════════════════════════════════════════════════════════ -->
+<script src="js/themes.js"></script>
+<script src="js/confetti.js"></script>
+<script src="js/generator.js"></script>
+<script src="js/chatbot.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
